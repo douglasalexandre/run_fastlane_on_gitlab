@@ -1,0 +1,48 @@
+stages:
+  - do_test
+  - do_build_testflight
+  - do_screenshots
+
+
+Release Build:
+  dependencies: []
+  stage: do_build_testflight
+  artifacts:
+    paths:
+      - ProjectName/fastlane/screenshots
+      - ProjectName/fastlane/logs
+  script:
+    - fastlane testflight
+  tags: 
+    - ios
+  only: 
+     - /^release-.*$/
+     - master
+
+Unit Tests:
+  dependencies: []
+  stage: do_test
+  artifacts:
+    paths:
+      - projectName/fastlane/screenshots
+      - projectName/fastlane/logs
+  script:
+    - fastlane tests
+  tags:
+    - ios
+  except:
+    - /^cibuild.*$/
+
+Screenshots:
+  dependencies: []
+  stage: do_screenshots
+  artifacts:
+    paths:
+      - ProjectName/fastlane/screenshots
+      - ProjectName/fastlane/logs
+  script:
+    - fastlane snapshot
+  tags:
+    - ios
+  only:
+    - /^screenshot-.*$/
